@@ -140,10 +140,18 @@
     var allMatches = [];
     this.forEach ( function (htmlEl){
       var found = [].slice.call(htmlEl.querySelectorAll(selector));
-      debugger;
       allMatches = allMatches.concat(found);
     });
     return new DOMNodeCollection(allMatches);
   };
+
+  DOMNodeCollection.prototype.remove = function () {
+    this.forEach( function(htmlEl) {
+      htmlEl.outerHTML = "";
+    });
+
+    this.htmlEls = [];
+  };
+
 
 })(this);
