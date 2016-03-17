@@ -153,5 +153,16 @@
     this.htmlEls = [];
   };
 
+  DOMNodeCollection.prototype.on = function(event, callback) {
+    this.forEach( function(htmlEl) {
+      htmlEl.addEventListener(event, callback);
+    });
+  };
+
+  DOMNodeCollection.prototype.off = function(event, callback) {
+    this.forEach( function(htmlEl) {
+      htmlEl.removeEventListener(event, callback);
+    });
+  };
 
 })(this);
