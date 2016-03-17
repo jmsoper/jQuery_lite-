@@ -82,7 +82,46 @@
     });
   };
 
+  DOMNodeCollection.prototype.removeClass = function (klass) {
+    this.forEach( function (htmlEl) {
+      htmlEl.classList.remove(klass);
+    });
+  };
 
+  DOMNodeCollection.prototype.toggleClass = function (klass) {
+    this.forEach( function (htmlEl) {
+      htmlEl.classList.toggle(klass);
+    });
+  };
 
+  DOMNodeCollection.prototype.showSennacy = function () {
+    this.append("<img class ='sennacy' src='http://www.sennacy.com/sennacy.jpg'>");
+  };
+
+  DOMNodeCollection.prototype.children = function () {
+    var allChildren = [];
+
+    this.forEach( function (htmlEl) {
+      allChildren = allChildren.concat( [].slice.call(htmlEl.children) );
+    });
+
+    return new DOMNodeCollection( allChildren );
+  };
+
+  DOMNodeCollection.prototype.first = function () {
+    return new DOMNodeCollection([this.htmlEls[0]]);
+  };
+
+  DOMNodeCollection.prototype.last = function () {
+    return new DOMNodeCollection([this.htmlEls[ this.length - 1 ]]);
+  };
+
+  DOMNodeCollection.prototype.firstChild = function () {
+    return this.children().first();
+  };
+
+  DOMNodeCollection.prototype.lastChild = function () {
+    return this.children().last();
+  };
 
 })(this);
