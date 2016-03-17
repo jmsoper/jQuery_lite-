@@ -161,19 +161,19 @@
     this.htmlEls = [];
   };
 
-  DOMNodeCollection.prototype.on = function(event, callback) {
+  DOMNodeCollection.prototype.on = function (event, callback) {
     this.forEach( function(htmlEl) {
       htmlEl.addEventListener(event, callback);
     });
   };
 
-  DOMNodeCollection.prototype.off = function(event, callback) {
+  DOMNodeCollection.prototype.off = function (event, callback) {
     this.forEach( function(htmlEl) {
       htmlEl.removeEventListener(event, callback);
     });
   };
 
-  root.$l.extend = function(base) {
+  root.$l.extend = function (base) {
     var args = [].slice.call(arguments, 1);
 
     for ( var i = 0; i < args.length; i++ ) {
@@ -181,8 +181,56 @@
         base[key] = args[i][key];
       }
     }
-
     return base;
   };
 
+  root.$l.ajax = function (options) {
+    var defaults = {
+      success: root.$l.success,
+      error: root.$l.error,
+      url: root.location.href,
+      method: "GET",
+      data: "",
+      contentType: "application/x-www-form-urlencoded; charset=UTF-8"
+    };
+
+    options = root.$l.extend(defaults, options);
+    root.$l.loadXMLDoc(options);
+  };
+
+  root.$l.error = function () {
+    return "error!";
+  };
+
+  root.$l.success = function () {
+    return "success!";
+  };
+
+  root.$l.loadXMLDoc = function (options) {
+    var xmlhttp;
+    if (root.XMLHttpRequest) {
+        // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
+           if(xmlhttp.status == 200){
+               options.success(xmlhttp.responseText);
+           }
+           else if(xmlhttp.status == 400) {
+              options.error(xmlhttp.responseText);
+           }
+           else {
+               options.error(xmlhttp.responseText);
+           }
+        }
+    };
+
+    xmlhttp.open(options.method, options.url, true);
+    xmlhttp.send();
+  };
 })(this);
