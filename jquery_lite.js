@@ -15,6 +15,12 @@
     }
   };
 
+  DOMNodeCollection.prototype.empty = function () {
+    for(var i = 0; i < this.htmlEls.length; i++) {
+      this.htmlEls[i].innerHTML = "";
+    }
+  };
+
   root.$l = function ( arg ) {
     if (typeof arg === "string"){
       var htmlEls = document.querySelectorAll(arg);
