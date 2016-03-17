@@ -124,4 +124,16 @@
     return this.children().last();
   };
 
+  DOMNodeCollection.prototype.parent = function () {
+    var allParents = [];
+
+    this.forEach( function (htmlEl) {
+      var parent = htmlEl.parentElement;
+      if(parent){allParents = allParents.concat(parent);}
+    });
+
+
+    return new DOMNodeCollection( allParents );
+  };
+
 })(this);
