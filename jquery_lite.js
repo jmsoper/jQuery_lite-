@@ -7,8 +7,16 @@
       return new DOMNodeCollection(htmlEls);
     } else if (arg instanceof HTMLElement) {
       return new DOMNodeCollection([arg]);
+    } else if (typeof arg === "function") {
+      var interval = root.setInterval( function() {
+        if ( document.readyState !== 'complete' ) return;
+        clearInterval( interval );
+          arg();
+      }, 100 );
     }
   };
+
+
 
   var DOMNodeCollection = function(htmlEls){
     this.htmlEls = htmlEls;
@@ -163,6 +171,18 @@
     this.forEach( function(htmlEl) {
       htmlEl.removeEventListener(event, callback);
     });
+  };
+
+  root.$l.extend = function(base) {
+    var args = [].slice.call(arguments, 1);
+
+    for ( var i = 0; i < args.length; i++ ) {
+      for ( var key in args[i] ) {
+        base[key] = args[i][key];
+      }
+    }
+
+    return base;
   };
 
 })(this);
