@@ -136,4 +136,14 @@
     return new DOMNodeCollection( allParents );
   };
 
+  DOMNodeCollection.prototype.find = function (selector) {
+    var allMatches = [];
+    this.forEach ( function (htmlEl){
+      var found = [].slice.call(htmlEl.querySelectorAll(selector));
+      debugger;
+      allMatches = allMatches.concat(found);
+    });
+    return new DOMNodeCollection(allMatches);
+  };
+
 })(this);
