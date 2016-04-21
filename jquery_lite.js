@@ -23,6 +23,14 @@
     this.length = htmlEls.length;
   };
 
+  DOMNodeCollection.prototype.forEach = function (callback) {
+    for (var i = 0; i < this.length; i++) {
+      callback(this.htmlEls[i]);
+    }
+  };
+  // DOMNodeCollection.prototype.length = function () {
+  //   return this.htmlEls.length;
+  // };
   DOMNodeCollection.prototype.html = function (string) {
     if (typeof string === "undefined") {
       return this.htmlEls[0].innerHTML;
@@ -33,14 +41,35 @@
     }
   };
 
-  DOMNodeCollection.prototype.forEach = function (callback) {
-    for (var i = 0; i < this.length; i++) {
-      callback(this.htmlEls[i]);
+  DOMNodeCollection.prototype.css = function (prop, val) {
+    if (typeof val === "undefined") {
+      return this.htmlEls[0].getAttribute("style", prop);
+    } else {
+    this.forEach( function(htmlEl){
+      var styleString = prop + ":" + val
+      htmlEl.setAttribute("style", styleString);
+      });
     }
   };
-  // DOMNodeCollection.prototype.length = function () {
-  //   return this.htmlEls.length;
-  // };
+  DOMNodeCollection.prototype.height = function(string){
+    if (typeof val === "undefined"){
+      return this.htmlEls[0].innerHeight;
+    } else {
+      this.forEach( function(htmlEl){
+        htmlEl.innerHeight = string;
+      })
+    }
+  };
+  DOMNodeCollection.prototype.width = function(string) {
+    if (typeof val === "undefined"){
+      return this.htmlEls[0].innerWidth;
+    } else {
+      this.forEach( function(htmlEl){
+        htmlEl.innerWidth = string;
+      })
+    }
+  }
+
 
   DOMNodeCollection.prototype.empty = function () {
     this.forEach( function(htmlEl) {
@@ -166,6 +195,13 @@
       htmlEl.addEventListener(event, callback);
     });
   };
+
+  DOMNodeCollection.prototype.click = function(callback) {
+    var event = "click"
+    this.forEach( function(htmlEl) {
+      htmlEl.addEventListener(event, callback);
+    })
+  }
 
   DOMNodeCollection.prototype.off = function (event, callback) {
     this.forEach( function(htmlEl) {
